@@ -148,6 +148,7 @@
 
 </body>
 <script>
+    const t0 = new Date();
     //
     let myfeeling;
 
@@ -232,9 +233,11 @@
     const submitIt = () => {
         document.getElementById('submit').disabled = true;
         document.getElementById('progress').style.display="block";
+        const timedelta = Math.round(((new Date()) - t0)/1000); // in seconds since page load
         const data = {
             user: uu.uid,
             email: uu.email,
+            timedelta: timedelta,
             message: document.getElementById("message").value,
             feeling: myfeeling
         }
