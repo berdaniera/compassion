@@ -51,7 +51,7 @@
 
         firebase.auth().onAuthStateChanged((user) => {
           if (user) { // User is signed in
-            document.getElementById('firebaseui-auth-container').style.display = 'none';
+            document.getElementById('firebase-ui').style.display = 'none';
             uu = user;
             document.getElementById('main').style.display = 'block';
           } else { // User is signed out
@@ -85,7 +85,13 @@
 </head>
 <body>
 
-<div id="firebaseui-auth-container"></div>
+
+<div id="firebase-ui">
+    <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+        <center><h1 class="text-gradient">Compassion Today</h1></center>
+    </div>
+    <div id="firebaseui-auth-container"></div>
+</div>
 
 <div class="mdl-grid" id="main" style="display:none;">
     <div id="inputs">
@@ -202,7 +208,7 @@
     }
 
     const getResponse = async (data) => {
-        if (data == undefined || data.length == 0) {
+        if (data.message == undefined || data.message.length == 0) {
             document.querySelector('#demo-snackbar-example').MaterialSnackbar.showSnackbar({
               message: 'Please enter some text!',
               timeout: 2000
@@ -224,6 +230,7 @@
     }
 
     const submitIt = () => {
+        document.getElementById('submit').disabled = true;
         document.getElementById('progress').style.display="block";
         const data = {
             user: uu.uid,
