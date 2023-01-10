@@ -136,7 +136,7 @@
             <p id="response-content">
             </p>
             <div>
-                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="window.location.reload();">
+                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="goBack">
                   <i class="material-icons mdl-color-text--deep-purple-400">arrow_back</i>
                 </button>
                 <button class="mdl-button mdl-js-button mdl-button--icon">
@@ -162,6 +162,8 @@
     const t0 = new Date();
     window.onload = () => {
         document.querySelector('[data-provider-id="password"]').style.backgroundColor = "#7e57c2";
+        document.getElementById('feeling').selectedIndex = 0;
+        document.getElementById("message").value = null;
     }
     //
     let myfeeling;
@@ -205,8 +207,6 @@
             ee.classList.contains(feeling) ? ee.style.display = 'inline-block' : ee.style.display = 'none';
         });
     }
-    document.getElementById('feeling').selectedIndex = 0;
-    document.getElementById("message").value = null;
     document.getElementById('feeling').addEventListener('change', showFeelings);
 
     const fetchApi = async (body) => {
@@ -242,6 +242,12 @@
             });
             return false;
         }
+    }
+
+    const goBack = () => {
+        document.getElementById('response').style.display="none";
+        document.getElementById('inputs').style.display="block";
+        document.getElementById('response-content').innerHTML = null;
     }
 
     const submitIt = () => {
