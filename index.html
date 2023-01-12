@@ -88,20 +88,24 @@
 
 <div id="firebase-ui">
     <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
-        <center><h1 class="text-gradient">Compassion Today</h1></center>
+        <center>
+            <h1 class="text-gradient">Compassion Today</h1>
+            <h4 class="mdl-color-text--dark-grey" style="font-weight:300;">Cultivate more self-compassion with personalized guidance based on your input.</h4>
+        </center>
     </div>
+    <br>
     <div id="firebaseui-auth-container"></div>
 </div>
 
 <div class="mdl-grid" id="main" style="display:none;">
     <div id="inputs">
         <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
-            <h3 class="text-gradient">Tell me about your day.</h3>
+            <h3 class="text-gradient">Write about your day.</h3>
             <!-- <h3 class="mdl-color-text--grey">Tell me about your day.</h3> -->
         </div>
         <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:100%;">
-                <textarea class="mdl-textfield__input" type="text" rows= "8" id="message" ></textarea>
+                <textarea class="mdl-textfield__input" type="text" maxlength="1000" rows="6" id="message" ></textarea>
                 <label class="mdl-textfield__label" for="input">What happened today?</label>
             </div>
         </div>
@@ -128,24 +132,32 @@
             </button>
             <div id="progress" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="width:100%;display:none;"></div>
         </div>
+        <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <br>
+            <hr>
+            <button class="mdl-button mdl-js-button mdl-color-text--purple-300" style="float: right;" onclick="logout()">
+                logout <i class="material-icons">logout</i>
+            </button>
+        </div>
     </div>
+
+
 
     <div id="response" style="display:none;">
         <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
             <h3 class="text-gradient">May you be free from suffering.</h3>
             <p id="response-content">
             </p>
-            <div>
-                <button class="mdl-button mdl-js-button mdl-button--icon" onclick="goBack">
-                  <i class="material-icons mdl-color-text--deep-purple-400">arrow_back</i>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                  <i class="material-icons mdl-color-text--deep-purple-400">thumb_up</i>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-button--icon">
-                  <i class="material-icons mdl-color-text--deep-purple-400">thumb_down</i>
-                </button>
-            </div>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <br>
+            <hr>
+            <button class="mdl-button mdl-js-button mdl-color-text--cyan-300" onclick="goBack()">
+              <i class="material-icons">arrow_back</i> back
+            </button>
+            <button class="mdl-button mdl-js-button mdl-color-text--purple-300" style="float: right;" onclick="logout()">
+                logout <i class="material-icons">logout</i>
+            </button>
         </div>
     </div>
 
@@ -159,7 +171,7 @@
 
 </body>
 <script>
-    const t0 = new Date();
+    let t0 = new Date();
     window.onload = () => {
         document.querySelector('[data-provider-id="password"]').style.backgroundColor = "#7e57c2";
         document.getElementById('feeling').selectedIndex = 0;
@@ -167,6 +179,7 @@
     }
     //
     let myfeeling;
+    let myrecord;
 
     let feelings = {
         happy:['Optimistic','Trusting','Peaceful','Powerful','Accepted','Proud','Interested','Content','Playful'],
@@ -244,12 +257,6 @@
         }
     }
 
-    const goBack = () => {
-        document.getElementById('response').style.display="none";
-        document.getElementById('inputs').style.display="block";
-        document.getElementById('response-content').innerHTML = null;
-    }
-
     const submitIt = () => {
         document.getElementById('submit').disabled = true;
         document.getElementById('progress').style.display="block";
@@ -274,6 +281,43 @@
         });
     }
     document.getElementById('submit').addEventListener('click', submitIt);
+
+    const goBack = () => {
+        t0 = new Date();
+        document.getElementById('submit').disabled = false;
+        document.getElementById('response').style.display="none";
+        document.getElementById('inputs').style.display="block";
+        document.getElementById('response-content').innerHTML = null;
+    }
+
+    const logout = () => {
+        firebase.auth().signOut().then(function() {
+            uu = null;
+            ui.start('#firebaseui-auth-container', uiConfig);
+            document.querySelector('[data-provider-id="password"]').style.backgroundColor = "#7e57c2";
+            document.getElementById('main').style.display = 'none';
+            document.getElementById('firebase-ui').style.display = 'block';
+
+        }, function(error) {
+        // An error happened.
+        });
+    }
+
+    // const feedbackReply = async (event) => {
+    //     // Get the text field
+    //     var feedback = event.target.id == "thumbs_up" ? "up" : "down";
+    //     console.log(feedback);
+    //     document.querySelector('#demo-snackbar-example').MaterialSnackbar.showSnackbar({
+    //         message: 'Thank you!',
+    //         timeout: 1000
+    //     });
+    //     if (messageRecord) {
+    //         const body = JSON.stringify({
+    //             key: apiKey, type: "feedback", thumbs: feedback, record: messageRecord
+    //         });
+    //         const content = await fetchApi(body);
+    //     }
+    // }
 
 
 </script>
